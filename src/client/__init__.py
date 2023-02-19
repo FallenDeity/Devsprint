@@ -50,15 +50,11 @@ class Website(fastapi.FastAPI):
         self.logger = Logger(name=__name__, file=True)
         self.config = config
         self.exception_handler(UnicornException)(self._exception_handler)
-        self._mount_files()
-        self._load_files()
 
     def _mount_files(self) -> None:
         for path in self._static:
             tag = path.split("\\")[-1]
-            self.routes.append(
-                fastapi.routing.Mount(f"/{tag}", StaticFiles(directory=path), name=tag)
-            )
+            self.mount(f"/{tag}", StaticFiles(directory=path), name=tag)
             self.logger.info(f"Mounted {tag} files")
 
     def _auto_setup(self, path: str) -> None:
