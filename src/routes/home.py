@@ -5,7 +5,6 @@ import random
 import fastapi
 
 from ..utils.constants import PATHS
-from ..utils.models import Anime
 from . import Extension, route
 
 
@@ -63,7 +62,7 @@ class Home(Extension):
         return fastapi.responses.RedirectResponse(url="mailto:triyanmukherjee@gmail.com")
 
     @route("/profile", method="GET", response_model=fastapi.responses.HTMLResponse)
-    async def source(self, request: fastapi.Request) -> fastapi.responses.Response:
+    async def profile(self, request: fastapi.Request) -> fastapi.responses.Response:
         session = request.cookies.get("session")
         user = await self.app.db.user.get_user(session)
         user.avatar = f"assets/avatars/{random.randint(1, 3)}.png"
