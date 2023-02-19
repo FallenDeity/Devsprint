@@ -11,11 +11,12 @@ class Comments(Table):
             "CREATE TABLE IF NOT EXISTS comments "
             "(id TEXT,"
             " username TEXT,"
+            " avatar TEXT,"
             " comment TEXT,"
             " comment_id UUID,"
             " created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
             " FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,"
-            " PRIMARY KEY (id, username))"
+            " PRIMARY KEY (id, username, comment_id))"
         )
 
     async def get_comments(self, id_: str) -> list[Comment] | None:
@@ -26,11 +27,13 @@ class Comments(Table):
 
     async def create_comment(self, comment: Comment) -> None:
         await self.db.execute(
-            "INSERT INTO comments (id, username, comment, comment_id) VALUES ($1, $2, $3, $4)",
+            "INSERT INTO comments (id, username, avatar, comment, comment_id, created_at) VALUES ($1, $2, $3, $4, $5, $6)",
             comment.id,
             comment.username,
+            comment.avatar,
             comment.comment,
             comment.comment_id,
+            comment.created_at,
         )
 
     async def delete_comment(self, id_: str, username: str, comment_id: str) -> None:

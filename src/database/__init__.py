@@ -9,7 +9,6 @@ import uuid
 
 import asyncpg
 
-from ..client.environment import MISSING
 from ..utils.constants import BOT_ID, PATHS
 from .tables import Table
 
@@ -32,16 +31,7 @@ class Database:
         self.app = app
 
     async def _create_pool(self) -> None:
-        if self.app.config.PGURL != MISSING:
-            self._pool = await asyncpg.create_pool(str(self.app.config.PGURL))
-        else:
-            self._pool = await asyncpg.create_pool(
-                host=str(self.app.config.PGHOST),
-                port=str(self.app.config.PGPORT),
-                user=str(self.app.config.PGUSER),
-                password=str(self.app.config.PGPASSWORD),
-                database=str(self.app.config.PGDATABASE),
-            )
+        self._pool = await asyncpg.create_pool(str(self.app.config.PGURL))
 
     async def setup(self) -> None:
         self.app.logger.info("Setting up the database...")

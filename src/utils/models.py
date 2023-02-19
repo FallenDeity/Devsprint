@@ -42,18 +42,18 @@ class Comment(Model):
     avatar: str
     comment: str
     comment_id: uuid.UUID = attrs.field(factory=uuid.uuid4)
-    created_at: datetime.datetime = attrs.field(factory=datetime.datetime.utcnow)
+    created_at: datetime.datetime = attrs.field(factory=datetime.datetime.now)
 
     @classmethod
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> Comment:
         """Convert a payload to a model."""
         return cls(
-            id=payload.get("id"),
-            username=payload.get("username"),
-            avatar=payload.get("avatar"),
-            comment=payload.get("comment"),
-            comment_id=payload.get("comment_id"),
-            created_at=payload.get("created_at"),
+            id=payload.get("id", ""),
+            username=payload.get("username", ""),
+            avatar=payload.get("avatar", ""),
+            comment=payload.get("comment", ""),
+            comment_id=payload.get("comment_id", uuid.uuid4()),
+            created_at=payload.get("created_at", datetime.datetime.now()),
         )
 
 
@@ -76,10 +76,10 @@ class User(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> User:
         """Convert a payload to a model."""
         return cls(
-            username=payload.get("username"),
-            password=payload.get("password"),
-            avatar=payload.get("avatar"),
-            bookmarks=payload.get("bookmarks"),
+            username=payload.get("username", ""),
+            password=payload.get("password", ""),
+            avatar=payload.get("avatar", AVATAR),
+            bookmarks=payload.get("bookmarks", []),
         )
 
 
@@ -93,9 +93,9 @@ class Image(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> Image:
         """Convert a payload to a model."""
         return cls(
-            small=payload.get("image_url"),
-            medium=payload.get("small_image_url"),
-            large=payload.get("large_image_url"),
+            small=payload.get("image_url", ""),
+            medium=payload.get("small_image_url", ""),
+            large=payload.get("large_image_url", ""),
         )
 
 
@@ -108,8 +108,8 @@ class Images(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> Images:
         """Convert a payload to a model."""
         return cls(
-            jpg=Image.from_payload(payload.get("jpg")),
-            webp=Image.from_payload(payload.get("webp")),
+            jpg=Image.from_payload(payload.get("jpg", {})),
+            webp=Image.from_payload(payload.get("webp", {})),
         )
 
 
@@ -125,11 +125,11 @@ class TrailerImage(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> TrailerImage:
         """Convert a payload to a model."""
         return cls(
-            image_url=payload.get("image_url"),
-            small_image_url=payload.get("small_image_url"),
-            large_image_url=payload.get("large_image_url"),
-            medium_image_url=payload.get("medium_image_url"),
-            maximum_image_url=payload.get("maximum_image_url"),
+            image_url=payload.get("image_url", ""),
+            small_image_url=payload.get("small_image_url", ""),
+            large_image_url=payload.get("large_image_url", ""),
+            medium_image_url=payload.get("medium_image_url", ""),
+            maximum_image_url=payload.get("maximum_image_url", ""),
         )
 
 
@@ -143,9 +143,9 @@ class Trailer(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> Trailer:
         """Convert a payload to a model."""
         return cls(
-            youtube_id=payload.get("youtube_id"),
-            url=payload.get("url"),
-            embed_url=payload.get("embed_url"),
+            youtube_id=payload.get("youtube_id", ""),
+            url=payload.get("url", ""),
+            embed_url=payload.get("embed_url", ""),
         )
 
 
@@ -158,8 +158,8 @@ class TitleType(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> TitleType:
         """Convert a payload to a model."""
         return cls(
-            type=payload.get("type"),
-            title=payload.get("title"),
+            type=payload.get("type", ""),
+            title=payload.get("title", ""),
         )
 
 
@@ -172,8 +172,8 @@ class Aired(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> Aired:
         """Convert a payload to a model."""
         return cls(
-            from_=payload.get("from"),
-            to=payload.get("to"),
+            from_=payload.get("from", ""),
+            to=payload.get("to", ""),
         )
 
 
@@ -188,10 +188,10 @@ class Broadcast(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> Broadcast:
         """Convert a payload to a model."""
         return cls(
-            day=payload.get("day"),
-            time=payload.get("time"),
-            timezone=payload.get("timezone"),
-            string=payload.get("string"),
+            day=payload.get("day", ""),
+            time=payload.get("time", ""),
+            timezone=payload.get("timezone", ""),
+            string=payload.get("string", ""),
         )
 
 
@@ -206,10 +206,10 @@ class Affiliate(Model):
     def from_payload(cls, payload: dict[typing.Any, typing.Any]) -> Affiliate:
         """Convert a payload to a model."""
         return cls(
-            mal_id=payload.get("mal_id"),
-            type=payload.get("type"),
-            name=payload.get("name"),
-            url=payload.get("url"),
+            mal_id=payload.get("mal_id", 0),
+            type=payload.get("type", ""),
+            name=payload.get("name", ""),
+            url=payload.get("url", ""),
         )
 
 
@@ -254,33 +254,33 @@ class Anime(Model):
     @classmethod
     def from_payload(cls, data: dict[typing.Any, typing.Any]) -> Anime:
         return cls(
-            mal_id=data.get("mal_id"),
-            url=data.get("url"),
+            mal_id=data.get("mal_id", ""),
+            url=data.get("url", ""),
             images=Images.from_payload(data.get("images", {})),
             trailer=Trailer.from_payload(data.get("trailer", {})),
-            approved=data.get("approved"),
-            title=data.get("title"),
+            approved=data.get("approved", False),
+            title=data.get("title", ""),
             titles=[TitleType.from_payload(title) for title in data.get("titles", [])],
-            title_english=data.get("title_english"),
-            title_japanese=data.get("title_japanese"),
-            title_synonyms=data.get("title_synonyms"),
-            type=data.get("type"),
-            source=data.get("source"),
-            episodes=data.get("episodes"),
-            airing=data.get("airing"),
+            title_english=data.get("title_english", ""),
+            title_japanese=data.get("title_japanese", ""),
+            title_synonyms=data.get("title_synonyms", ""),
+            type=data.get("type", ""),
+            source=data.get("source", ""),
+            episodes=data.get("episodes", 0),
+            airing=data.get("airing", False),
             aired=Aired.from_payload(data.get("aired", {})),
-            duration=data.get("duration"),
-            rating=data.get("rating"),
-            score=data.get("score"),
-            scored_by=data.get("scored_by"),
-            rank=data.get("rank"),
-            popularity=data.get("popularity"),
-            members=data.get("members"),
-            favorites=data.get("favorites"),
-            synopsis=data.get("synopsis"),
-            background=data.get("background"),
-            season=data.get("season"),
-            year=data.get("year"),
+            duration=data.get("duration", ""),
+            rating=data.get("rating", ""),
+            score=data.get("score", 0.0),
+            scored_by=data.get("scored_by", 0),
+            rank=data.get("rank", 0),
+            popularity=data.get("popularity", 0),
+            members=data.get("members", 0),
+            favorites=data.get("favorites", 0),
+            synopsis=data.get("synopsis", ""),
+            background=data.get("background", ""),
+            season=data.get("season", ""),
+            year=data.get("year", 0),
             broadcast=Broadcast.from_payload(data.get("broadcast", {})),
             producers=[Affiliate.from_payload(producer) for producer in data.get("producers", [])],
             licensors=[Affiliate.from_payload(licensor) for licensor in data.get("licensors", [])],

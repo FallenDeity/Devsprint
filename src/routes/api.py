@@ -30,5 +30,5 @@ class Api(Extension):
     @route("/api/v1/redirect", method="GET", response_model=fastapi.responses.Response)
     async def redirect(self, request: fastapi.Request) -> fastapi.responses.Response:
         res = fastapi.responses.RedirectResponse(url="/")
-        res.set_cookie(key="session", value=request.headers.get("username"))
+        res.set_cookie(key="session", value=request.headers.get("username", ""))
         return res

@@ -50,7 +50,8 @@ class Home(Extension):
     @route("/logout", method="GET", response_model=fastapi.responses.HTMLResponse)
     async def logout(self, request: fastapi.Request) -> fastapi.responses.Response:
         name = request.cookies.pop("session")
-        self.app.users.remove([i for i in self.app.users if i.username == name][0])
+        to_remove = [i for i in self.app.users if i.username == name][0]
+        self.app.users.remove(to_remove)
         return fastapi.responses.RedirectResponse("/")
 
     @route("/source", method="GET", response_model=fastapi.responses.HTMLResponse)
@@ -63,8 +64,9 @@ class Home(Extension):
 
     @route("/profile", method="GET", response_model=fastapi.responses.HTMLResponse)
     async def profile(self, request: fastapi.Request) -> fastapi.responses.Response:
-        session = request.cookies.get("session")
+        session = request.cookies.get("session", "")
         user = await self.app.db.user.get_user(session)
+        assert user is not None
         user.avatar = f"assets/avatars/{random.randint(1, 3)}.png"
         f_img = random.choice([i.as_posix().split("/static")[-1] for i in (PATHS.ASSETS / "footers").glob("*.jpg")])
         return self.app.templates.TemplateResponse(
@@ -78,6 +80,7 @@ class Home(Extension):
         if novel_id not in self.app.animes:
             return self.app.templates.TemplateResponse("error.html", {"request": request, "name": "Error"})
         anime = self.app.animes[novel_id]
+        comments = await self.app.db.comments.get_comments(str(anime.mal_id))
         return self.app.templates.TemplateResponse(
-            "template.html", {"request": request, "anime": anime, "users": user, "f_img": f_img}
+            "template.html", {"request": request, "anime": anime, "users": user, "f_img": f_img, "comments": comments}
         )

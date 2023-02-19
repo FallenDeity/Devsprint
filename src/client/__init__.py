@@ -5,7 +5,7 @@ import inspect
 import pathlib
 import typing as t
 
-import _pickle as pickle
+import _pickle as pickle  # type: ignore
 import aiohttp
 import fastapi
 import uvicorn
@@ -16,7 +16,7 @@ from starlette.exceptions import HTTPException
 from ..database import Database
 from ..routes import Extension
 from ..utils.constants import PATHS
-from ..utils.models import Anime
+from ..utils.models import Anime, UserModel
 from .environment import config
 from .logger import Logger
 
@@ -40,7 +40,7 @@ class Website(fastapi.FastAPI):
             name="assets",
         ),
     ]
-    users = []
+    users: list[UserModel] = []
     animes: dict[int, Anime] = {}
 
     def __init__(
@@ -99,7 +99,7 @@ class Website(fastapi.FastAPI):
         self._load_files()
         await self.db.setup()
         with open("data.pickle", "rb") as f:
-            data = pickle.load(f)
+            data: list[list[Anime]] = pickle.load(f)
         self.animes = {j.mal_id: j for i in data for j in i}
         self.logger.flair("Started up successfully.")
 
