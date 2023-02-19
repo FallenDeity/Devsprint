@@ -1,5 +1,7 @@
 from __future__ import annotations
+import _pickle as pickle
 
+import asyncio
 import importlib
 import inspect
 import pathlib
@@ -13,9 +15,11 @@ from fastapi.templating import Jinja2Templates
 
 from ..routes import Extension
 from ..utils.constants import PATHS
+from ..utils.models import Anime
+from ..database import Database
 from .environment import config
-from .errors import UnicornException
 from .logger import Logger
+from starlette.exceptions import HTTPException
 
 __author__: str = "Triyan Mukherjee"
 __version__: str = "0.0.1"
@@ -37,6 +41,8 @@ class Website(fastapi.FastAPI):
             name="assets",
         ),
     ]
+    users = []
+    novels = {}
 
     def __init__(
         self,
@@ -60,7 +66,8 @@ class Website(fastapi.FastAPI):
         )
         self.logger = Logger(name=__name__, file=True)
         self.config = config
-        self.exception_handler(UnicornException)(self._exception_handler)
+        self.db = Database(self)
+        self.exception_handler(HTTPException)(self._exception_handler)
         self._mount_files()
         self._load_files()
 
@@ -80,10 +87,11 @@ class Website(fastapi.FastAPI):
                 self.logger.info(f"Loaded {name} extension")
 
     async def _exception_handler(
-        self, request: fastapi.Request, exc: UnicornException
+        self, request: fastapi.Request, _exc: HTTPException
     ) -> fastapi.responses.Response:
+        self.logger.error(f"Error: {_exc.detail}")
         return self.templates.TemplateResponse(
-            "error.html", {"request": request, "name": "Error", "error": exc.name}
+            "error.html", {"request": request, "name": "Error"}
         )
 
     def _load_files(self) -> None:
@@ -100,6 +108,9 @@ class Website(fastapi.FastAPI):
         self.client = aiohttp.ClientSession()
         self._mount_files()
         self._load_files()
+        await self.db.setup()
+        with open("data.pickle", "rb") as f:
+            self.novels = pickle.load(f)
         self.logger.flair("Started up successfully.")
 
     async def on_shutdown(self) -> None:
@@ -111,7 +122,7 @@ class Website(fastapi.FastAPI):
         self.logger.flair("Running...")
         uvicorn.run(
             "main:app",
-            reload=True,
+            reload=False,
             reload_dirs=[str(PATHS.ROUTES), str(PATHS.TEMPLATES)],
             use_colors=True,
         )

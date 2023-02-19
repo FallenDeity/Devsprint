@@ -6,7 +6,7 @@ import typing as t
 import attrs
 from dotenv import load_dotenv
 
-__all__: tuple[str, ...] = ("config",)
+__all__: tuple[str, ...] = ("config", "MISSING",)
 load_dotenv()
 MISSING = object()
 
@@ -35,6 +35,7 @@ class EnvironmentVariable:
 
 class ENVIRONMENT:
     _instance: t.Optional["ENVIRONMENT"] = None
+    PGURL: EnvironmentVariable = EnvironmentVariable(name="PGURL")
 
     def __new__(cls, *args: t.Any, **kwargs: t.Any) -> "ENVIRONMENT":
         if cls._instance is None:
