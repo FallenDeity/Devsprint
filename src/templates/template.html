@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "headers.html" %}
+<body>
+    {% include "navbar.html" %}
+    <div class="container justify-content-center align-items-center text-center">
+        <div class="card mb-3 bg-dark text-white border-dark-subtle" style="margin-top: 128px; width: 40%; margin-left: auto; margin-right: auto; display: block; box-shadow: 0 0 40px darkslategray">
+            <img class="card-img-top" src="{{ anime.images.webp.large }}" alt="Card image cap">
+            <div class="card-body">
+            <h2 class="card-title font-bold text-dark-emphasis" style="font-size: 30px; margin-bottom: 20px">{{ anime.title }}  #{{ anime.mal_id }}</h2>
+            <p class="card-text text-white-50">{{ anime.synopsis }}</p>
+            <a class="card-text" href="{{ anime.url }}" style="text-decoration: none"><small class="text-muted">Click here to visit animelist!</small></a>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark text-white-50">📺 Type: {{ anime.type }}<br>📖 Episodes: {{ anime.episodes }}<br>✈️ Status: {{ anime.status }}<br>⏳ Duration: {{ anime.duration }}</li>
+            </ul>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark text-white-50">🌟 Rating: {{ anime.rating }}<br>🎖️ Score: {{ anime.score }}<br>👤 Scored By: {{ anime.scored_by }}<br>🏆 Rank: {{ anime.rank }}</li>
+            </ul>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item bg-dark text-white-50">
+                    {% for genre in anime.genres %}
+                    <span class="badge badge-pill badge-danger">{{ genre.name }}</span>
+                    {% endfor %}
+                    {% for genre in anime.explicit_genres %}
+                    <span class="badge badge-pill badge-danger">{{ genre.name }}</span>
+                    {% endfor %}
+                    {% for genre in anime.themes %}
+                    <span class="badge badge-pill badge-danger">{{ genre.name }}</span>
+                    {% endfor %}
+                    {% for genre in anime.demographics %}
+                    <span class="badge badge-pill badge-danger">{{ genre.name }}</span>
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% include "footer.html" %}
+</body>
+</html>

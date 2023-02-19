@@ -74,22 +74,14 @@ class Website(fastapi.FastAPI):
     def _auto_setup(self, path: str) -> None:
         module = importlib.import_module(path)
         for name, obj in inspect.getmembers(module):
-            if (
-                inspect.isclass(obj)
-                and issubclass(obj, Extension)
-                and name != "Extension"
-            ):
+            if inspect.isclass(obj) and issubclass(obj, Extension) and name != "Extension":
                 router = obj(app=self)
                 self.include_router(router)
                 self.logger.info(f"Loaded {name} extension")
 
-    async def _exception_handler(
-        self, request: fastapi.Request, _exc: HTTPException
-    ) -> fastapi.responses.Response:
+    async def _exception_handler(self, request: fastapi.Request, _exc: HTTPException) -> fastapi.responses.Response:
         self.logger.error(f"Error: {_exc.detail}")
-        return self.templates.TemplateResponse(
-            "error.html", {"request": request, "name": "Error"}
-        )
+        return self.templates.TemplateResponse("error.html", {"request": request, "name": "Error"})
 
     def _load_files(self) -> None:
         self.logger.info("Loading extensions")

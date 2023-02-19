@@ -60,9 +60,7 @@ class FileHandler(logging.FileHandler):
         if self._last_entry.date() != datetime.datetime.today().date():
             self._last_entry = datetime.datetime.today()
             self.close()
-            self.baseFilename = (
-                self.folder / f"{self._last_entry.strftime('%Y-%m-%d')}_log.{self.ext}"
-            ).as_posix()
+            self.baseFilename = (self.folder / f"{self._last_entry.strftime('%Y-%m-%d')}_log.{self.ext}").as_posix()
             self.stream = self._open()
         super().emit(record)
 

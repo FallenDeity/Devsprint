@@ -44,9 +44,7 @@ class Comments(Table):
     async def delete_comments(self, id_: str) -> None:
         await self.db.execute("DELETE FROM comments WHERE id = $1", id_)
 
-    async def update_comment(
-        self, id_: str, username: str, comment: str, comment_id: str
-    ) -> None:
+    async def update_comment(self, id_: str, username: str, comment: str, comment_id: str) -> None:
         await self.db.execute(
             "UPDATE comments SET comment = $1 WHERE id = $2 AND username = $3 AND comment_id = $4",
             comment,

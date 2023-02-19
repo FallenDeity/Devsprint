@@ -5,17 +5,17 @@
     {% include "navbar.html" %}
     <h1 style="font-size: 40px; margin-top: 128px; font-weight: bold" class="text-center">Random Pick</h1>
     {% for chunk in animes %}
-        <div class="row justify-content-center align-content-center" style="margin-top: 128px; position: relative; z-index: -1">
+        <div class="row justify-content-center align-content-center" style="margin-top: 128px; position: relative;">
             {% for anime in chunk %}
-            <div class="card bg-dark text-white" style="width: 16rem; margin-left: 10px; padding: 0">
+            <div class="card bg-dark text-white" style="width: 16rem; margin-left: 10px; padding: 0; margin-top: 10px" href="/novel?novel_id={{ anime.mal_id }}" onclick="window.location.href = '/novel?novel_id={{ anime.mal_id }}'">
             <img class="card-img-top" src={{ anime.images.jpg.small }} alt="Card image cap" style="width: 100%">
                 <div class="card-body">
                     <h5 class="card-title">{{ anime.title }}</h5>
                     <p class="card-text">{{ str(anime.synopsis)[:100] }}</p>
                 </div>
-                <div class="card-footer">
-                    <a href={{ anime.url }} class="btn btn-primary">Animelist</a>
-                </div>
+                <a class="btn btn-success" onclick="window.location.href = '{{ anime.url }}'" href="{{ anime.url }}" style="margin: 10px">
+                        Animelist
+                </a>
             </div>
             {% endfor %}
         </div>

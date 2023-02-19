@@ -19,9 +19,7 @@ class User(Table):
         )
 
     async def get_user(self, username: str) -> UserModel | None:
-        data = await self.db.fetchrow(
-            "SELECT * FROM users WHERE username = $1", username
-        )
+        data = await self.db.fetchrow("SELECT * FROM users WHERE username = $1", username)
         if data is None:
             return None
         return UserModel(*data)
@@ -39,9 +37,7 @@ class User(Table):
         await self.db.execute("DELETE FROM users WHERE username = $1", username)
 
     async def get_bookmarks(self, username: str) -> list[int] | None:
-        data = await self.db.fetchrow(
-            "SELECT bookmarks FROM users WHERE username = $1", username
-        )
+        data = await self.db.fetchrow("SELECT bookmarks FROM users WHERE username = $1", username)
         if data is None:
             return None
         return data[0]
@@ -61,14 +57,10 @@ class User(Table):
         )
 
     async def update_avatar(self, username: str, avatar: str) -> None:
-        await self.db.execute(
-            "UPDATE users SET avatar = $1 WHERE username = $2", avatar, username
-        )
+        await self.db.execute("UPDATE users SET avatar = $1 WHERE username = $2", avatar, username)
 
     async def get_comments(self, username: str) -> list[Comment] | None:
-        data = await self.db.fetch(
-            "SELECT * FROM comments WHERE username = $1", username
-        )
+        data = await self.db.fetch("SELECT * FROM comments WHERE username = $1", username)
         if data is None:
             return None
         return [Comment(*row) for row in data]

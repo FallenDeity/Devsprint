@@ -28,9 +28,7 @@ class EnvironmentVariable:
         try:
             self.default = self.cast(self.default)
         except Exception as e:
-            raise ValueError(
-                f"Failed to cast {self.name} to {self.cast.__name__}"
-            ) from e
+            raise ValueError(f"Failed to cast {self.name} to {self.cast.__name__}") from e
 
     def __str__(self) -> str:
         return self.default if isinstance(self.default, str) else str(super())

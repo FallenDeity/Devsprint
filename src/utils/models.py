@@ -282,25 +282,11 @@ class Anime(Model):
             season=data.get("season"),
             year=data.get("year"),
             broadcast=Broadcast.from_payload(data.get("broadcast", {})),
-            producers=[
-                Affiliate.from_payload(producer)
-                for producer in data.get("producers", [])
-            ],
-            licensors=[
-                Affiliate.from_payload(licensor)
-                for licensor in data.get("licensors", [])
-            ],
-            studios=[
-                Affiliate.from_payload(studio) for studio in data.get("studios", [])
-            ],
+            producers=[Affiliate.from_payload(producer) for producer in data.get("producers", [])],
+            licensors=[Affiliate.from_payload(licensor) for licensor in data.get("licensors", [])],
+            studios=[Affiliate.from_payload(studio) for studio in data.get("studios", [])],
             genres=[Affiliate.from_payload(genre) for genre in data.get("genres", [])],
-            explicit_genres=[
-                Affiliate.from_payload(genre)
-                for genre in data.get("explicit_genres", [])
-            ],
+            explicit_genres=[Affiliate.from_payload(genre) for genre in data.get("explicit_genres", [])],
             themes=[Affiliate.from_payload(theme) for theme in data.get("themes", [])],
-            demographic=[
-                Affiliate.from_payload(demographic)
-                for demographic in data.get("demographics", [])
-            ],
+            demographic=[Affiliate.from_payload(demographic) for demographic in data.get("demographics", [])],
         )

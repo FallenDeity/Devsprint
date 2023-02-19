@@ -44,9 +44,5 @@ class Config(Table):
             bot_id,
         )
 
-    async def update_database(
-        self, bot_id: int, stamp: datetime.datetime = datetime.datetime.now()
-    ) -> None:
-        await self.db.execute(
-            "UPDATE config SET last_update = $1 WHERE id = $2", stamp, bot_id
-        )
+    async def update_database(self, bot_id: int, stamp: datetime.datetime = datetime.datetime.now()) -> None:
+        await self.db.execute("UPDATE config SET last_update = $1 WHERE id = $2", stamp, bot_id)

@@ -98,9 +98,7 @@ class Database:
                 await self.config.update_migration(BOT_ID, uuid.UUID(migration))
                 self.app.logger.info(f"Applied migration {migration}.")
             except Exception as e:
-                self.app.logger.critical(
-                    f"Failed to apply migration {migration}! Rolling back..."
-                )
+                self.app.logger.critical(f"Failed to apply migration {migration}! Rolling back...")
                 raise e
         self.app.logger.flair("Finished applying migrations.")
 

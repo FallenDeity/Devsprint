@@ -53,9 +53,7 @@ class LoggedRoute(fastapi.routing.APIRoute):
 class Extension(fastapi.APIRouter):
     def __init__(self, *, app: "Website", **kwargs: t.Any) -> None:
         self.app = app
-        super().__init__(
-            **kwargs, tags=[self.__class__.__name__], route_class=LoggedRoute
-        )
+        super().__init__(**kwargs, tags=[self.__class__.__name__], route_class=LoggedRoute)
         self._setup()
 
     def _setup(self) -> None:
@@ -70,9 +68,7 @@ class Extension(fastapi.APIRouter):
                         response_model=_route.response_model,
                     )
                 except fastapi.exceptions.FastAPIError:
-                    self.add_api_route(
-                        _route.path, obj, methods=[_route.method], name=_route.name
-                    )
+                    self.add_api_route(_route.path, obj, methods=[_route.method], name=_route.name)
                 self.app.logger.info(f"Loaded {name} route")
 
 
@@ -85,11 +81,7 @@ def route(
         if first_arg.name != "self":
             raise TypeError("Route must be a class method")
         path_ = path or f"/{func.__name__}"
-        _response_model = (
-            response_model
-            or inspect.signature(func).return_annotation
-            or fastapi.Response
-        )
+        _response_model = response_model or inspect.signature(func).return_annotation or fastapi.Response
         custom = Route(
             path=path_,
             method=method,
