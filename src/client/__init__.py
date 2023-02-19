@@ -50,6 +50,8 @@ class Website(fastapi.FastAPI):
         self.logger = Logger(name=__name__, file=True)
         self.config = config
         self.exception_handler(UnicornException)(self._exception_handler)
+        self._mount_files()
+        self._load_files()
 
     def _mount_files(self) -> None:
         for path in self._static:
