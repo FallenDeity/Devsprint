@@ -5,8 +5,8 @@ import random
 import fastapi
 
 from ..utils.constants import PATHS
-from . import Extension, route
 from ..utils.models import Anime
+from . import Extension, route
 
 
 class Home(Extension):
@@ -59,7 +59,7 @@ class Home(Extension):
         return fastapi.responses.RedirectResponse(url="https://github.com/FallenDeity/Devsprint")
 
     @route("/email", method="GET", response_model=fastapi.responses.HTMLResponse)
-    async def source(self, _: fastapi.Request) -> fastapi.responses.Response:
+    async def mail(self, _: fastapi.Request) -> fastapi.responses.Response:
         return fastapi.responses.RedirectResponse(url="mailto:triyanmukherjee@gmail.com")
 
     @route("/profile", method="GET", response_model=fastapi.responses.HTMLResponse)
@@ -68,7 +68,9 @@ class Home(Extension):
         user = await self.app.db.user.get_user(session)
         user.avatar = f"assets/avatars/{random.randint(1, 3)}.png"
         f_img = random.choice([i.as_posix().split("/static")[-1] for i in (PATHS.ASSETS / "footers").glob("*.jpg")])
-        return self.app.templates.TemplateResponse("profile.html", {"request": request, "user": user, "users": True, "f_img": f_img})
+        return self.app.templates.TemplateResponse(
+            "profile.html", {"request": request, "user": user, "users": True, "f_img": f_img}
+        )
 
     @route("/novel", method="GET", response_model=fastapi.responses.HTMLResponse)
     async def novel(self, request: fastapi.Request, novel_id: int) -> fastapi.responses.Response:
@@ -77,4 +79,6 @@ class Home(Extension):
         if novel_id not in self.app.animes:
             return self.app.templates.TemplateResponse("error.html", {"request": request, "name": "Error"})
         anime = self.app.animes[novel_id]
-        return self.app.templates.TemplateResponse("template.html", {"request": request, "anime": anime, "users": user, "f_img": f_img})
+        return self.app.templates.TemplateResponse(
+            "template.html", {"request": request, "anime": anime, "users": user, "f_img": f_img}
+        )
