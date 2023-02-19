@@ -1,4 +1,3 @@
-import asyncio
 from src import Website
 
 app = Website(docs="/docs", redoc="/redocs")

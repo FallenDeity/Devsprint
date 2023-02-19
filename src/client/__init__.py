@@ -56,7 +56,7 @@ class Website(fastapi.FastAPI):
     def _mount_files(self) -> None:
         for path in self._static:
             tag = path.split("\\")[-1]
-            self.mount(f"/{tag}", StaticFiles(directory=path), name=tag)
+            self.mount(f"/{tag}", StaticFiles(directory=path, html=True), name=tag)
             self.logger.info(f"Mounted {tag} files")
 
     def _auto_setup(self, path: str) -> None:
