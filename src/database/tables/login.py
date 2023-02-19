@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 from src.utils.models import User as UserModel, Comment
 
 from ._table import Table

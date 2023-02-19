@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 from ._table import Table
 from .config import Config
 from .login import User
