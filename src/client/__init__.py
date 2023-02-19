@@ -102,7 +102,7 @@ class Website(fastapi.FastAPI):
     def run(self) -> None:
         self.logger.flair("Running...")
         uvicorn.run(
-            "__main__:app",
+            "main:app",
             reload=True,
             reload_dirs=[str(PATHS.ROUTES), str(PATHS.TEMPLATES)],
             use_colors=True,
