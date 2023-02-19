@@ -47,6 +47,7 @@ header {
     margin-top: 90px;
     padding: 0 0 30px;
     border-radius: 10px;
+    z-index: 99;
     box-shadow: 0 0 20px 0 #7d3ddc;
 }
 
