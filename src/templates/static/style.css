@@ -12,7 +12,6 @@ body {
     margin: 0;
     background: #ee6461;
     color: #000000;
-    overflow: hidden;
 }
 
 
@@ -157,6 +156,10 @@ header {
     .topnav a.icon {
         float: right;
         display: block;
+    }
+
+    .topnav .trapezoid {
+        display: none;
     }
 
 }
