@@ -1,4 +1,4 @@
-# Dynamic Website 
+# Dynamic Website
 
 To run:
 

@@ -25,7 +25,18 @@ __all__: tuple[str, ...] = ("Website",)
 class Website(fastapi.FastAPI):
     client: aiohttp.ClientSession
     templates: Jinja2Templates = Jinja2Templates(directory=str(PATHS.TEMPLATES))
-    _static: list[str] = [str(PATHS.STATIC), str(PATHS.ASSETS)]
+    _static: list[fastapi.routing.Mount] = [
+        fastapi.routing.Mount(
+            "/static",
+            StaticFiles(directory=str(PATHS.STATIC), html=True),
+            name="static",
+        ),
+        fastapi.routing.Mount(
+            "/assets",
+            StaticFiles(directory=str(PATHS.ASSETS), html=True),
+            name="assets",
+        ),
+    ]
 
     def __init__(
         self,
@@ -54,10 +65,7 @@ class Website(fastapi.FastAPI):
         self._load_files()
 
     def _mount_files(self) -> None:
-        for path in self._static:
-            tag = path.split("\\")[-1]
-            self.mount(f"/{tag}", StaticFiles(directory=path, html=True), name=tag)
-            self.logger.info(f"Mounted {tag} files")
+        self.routes.extend(self._static)
 
     def _auto_setup(self, path: str) -> None:
         module = importlib.import_module(path)
