@@ -6,7 +6,10 @@ import typing as t
 import attrs
 from dotenv import load_dotenv
 
-__all__: tuple[str, ...] = ("config", "MISSING",)
+__all__: tuple[str, ...] = (
+    "config",
+    "MISSING",
+)
 load_dotenv()
 MISSING = object()
 

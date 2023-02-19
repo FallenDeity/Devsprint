@@ -75,7 +75,10 @@ function topNav() {
 
 function toggleMode() {
     let element = document.body;
-    element.classList.toggle("dark-mode");
+    let button = document.getElementById("toggler");
+    let icon = document.getElementById("toggler-icon");
+    icon.className = (icon.className === "fa-solid fa-moon") ? "fa-solid fa-sun" : "fa-solid fa-moon";
+    element.classList.toggle("day-mode");
 }
 
 

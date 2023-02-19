@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "headers.html" %}
+<body>
+    {% include "navbar.html" %}
+    <div class="container" style="margin-top: 129px">
+            <div class="row text-center justify-content-center align-items-center">
+                <div class="col-md-4">
+                    <img alt="Avatar" class="avatar" src={{ user.avatar }}>
+                    <h1 class="title" style="color: #f1f1f1; line-height: 2; font-size: 40px; margin-top: 15px; font-weight: bold">{{ user.username }}</h1>
+                    {% if user.bookmarks %}
+                    <p style="font-size: 32px; font-weight: bold">
+                        <i aria-hidden="true" class="fa-solid fa-bookmark"></i>
+                        {{ user.bookmarks }}
+                    </p>
+                    {% else %}
+                    <p style="font-size: 32px; font-weight: bold">
+                        <i aria-hidden="true" class="fa-solid fa-bookmark"></i>
+                        No bookmarks
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% include "footer.html" %}
+</body>
+</html>

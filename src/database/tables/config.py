@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-
 import datetime
 import typing as t
 
@@ -32,17 +31,22 @@ class Config(Table):
             ids: list["uuid.UUID"] = []
             args = (bot_id, ids, stamp)
             await self.db.execute(
-                "INSERT INTO config (id, migrations, last_update) VALUES ($1, $2, $3)", *args
+                "INSERT INTO config (id, migrations, last_update) VALUES ($1, $2, $3)",
+                *args,
             )
             return ConfigModel(*args)
         return ConfigModel(*data)
 
     async def update_migration(self, bot_id: int, migration: "uuid.UUID") -> None:
         await self.db.execute(
-            "UPDATE config SET migrations = array_append(migrations, $1) WHERE id = $2", migration, bot_id
+            "UPDATE config SET migrations = array_append(migrations, $1) WHERE id = $2",
+            migration,
+            bot_id,
         )
 
-    async def update_database(self, bot_id: int, stamp: datetime.datetime = datetime.datetime.now()) -> None:
+    async def update_database(
+        self, bot_id: int, stamp: datetime.datetime = datetime.datetime.now()
+    ) -> None:
         await self.db.execute(
             "UPDATE config SET last_update = $1 WHERE id = $2", stamp, bot_id
         )

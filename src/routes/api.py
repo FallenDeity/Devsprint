@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-
 import fastapi
 
-from . import Extension, route
 from ..utils.models import User, UserModel
+from . import Extension, route
 
 
 class Api(Extension):
-
-    @route("/api/v1/signup", method="POST", response_model=fastapi.responses.JSONResponse)
+    @route(
+        "/api/v1/signup", method="POST", response_model=fastapi.responses.JSONResponse
+    )
     async def signup(self, data: UserModel) -> fastapi.responses.Response:
         username, password = data.username, data.password
         user = await self.app.db.user.get_user(username)
@@ -18,7 +18,9 @@ class Api(Extension):
                 {"message": "Username already exists"}, status_code=400
             )
         await self.app.db.user.create_user(User(username, password))
-        return fastapi.responses.JSONResponse({"message": "User created"}, status_code=201)
+        return fastapi.responses.JSONResponse(
+            {"message": "User created"}, status_code=201
+        )
 
     @route("/api/v1/login", method="POST", response_model=fastapi.responses.Response)
     async def login(self, data: UserModel) -> fastapi.responses.Response:

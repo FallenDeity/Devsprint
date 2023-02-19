@@ -1,7 +1,6 @@
 # pyright: reportUnknownVariableType=false
 from __future__ import annotations
 
-
 import importlib
 import inspect
 import time
@@ -11,14 +10,13 @@ import uuid
 import asyncpg
 
 from ..client.environment import MISSING
-from ..utils.constants import PATHS, BOT_ID
-
+from ..utils.constants import BOT_ID, PATHS
 from .tables import Table
 
 if t.TYPE_CHECKING:
     from src import Website
 
-    from .tables import Config, User, Comments
+    from .tables import Comments, Config, User
 
 
 __all__: tuple[str, ...] = ("Database",)
@@ -100,7 +98,9 @@ class Database:
                 await self.config.update_migration(BOT_ID, uuid.UUID(migration))
                 self.app.logger.info(f"Applied migration {migration}.")
             except Exception as e:
-                self.app.logger.critical(f"Failed to apply migration {migration}! Rolling back...")
+                self.app.logger.critical(
+                    f"Failed to apply migration {migration}! Rolling back..."
+                )
                 raise e
         self.app.logger.flair("Finished applying migrations.")
 

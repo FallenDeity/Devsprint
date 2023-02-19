@@ -1,46 +1,53 @@
 <nav>
     <div class="topnav" id="Navbar">
-        <button class="left" href="/" style="font-size: 36px;font-weight: bold;margin-left: 10px; display: flex">
+        <button class="left" href="/" style="font-size: 36px;font-weight: bold;margin-left: 10px; display: flex" onclick="window.location.href = '/'">
             <img alt="Home" src="static/assets/home.png" style="width: 64px; height: 64px">
             Home
         </button>
         <a class="icon" href="javascript:void(0);" id="menu" onclick="topNav()" style="margin-right: 20px">
             <i aria-hidden="true" class="fa-solid fa-bars" id="menu-btn"></i>
             <div class="dropdown" id="mobile-menu">
-                <a href="/blog"><i aria-hidden="true" class="fa-solid fa-blog"></i>Blog</a>
-                <a href="/profile"><i aria-hidden="true" class="fa-solid fa-user-secret rounded"></i>Profile</a>
-                <a href="/projects"><i aria-hidden="true" class="fa-solid fa-microchip"></i>Projects</a>
-                <a href="/achievements"><i aria-hidden="true" class="fa-solid fa-trophy"></i>Achievements</a>
                 <a href="/source"><i aria-hidden="true" class="fa-brands fa-github-alt rounded"></i>Source Code</a>
+                <a href="/search"><i aria-hidden="true" class="fa-solid fa-search"></i>Search</a>
+                {% if users %}
+                <a href="/profile"><i aria-hidden="true" class="fa-solid fa-user rounded"></i>Profile</a>
+                <a href="/logout"><i class="fa-solid fa-left-from-line" aria-hidden="true"></i>Logout</a>
+                {% else %}
+                <a href="/login"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>Login</a>
+                <a href="/signup"><i class="fa-solid fa-user-plus" aria-hidden="true"></i>Sign Up</a>
+                {% endif %}
             </div>
         </a>
-        <button class="right rounded_button" href="/profile" onclick="location.href='/profile'"
+        <button class="right rounded_button" onclick="toggleMode()" style="margin-right: 20px" id="toggler">
+            <i aria-hidden="true" class="fa-solid fa-moon" id="toggler-icon"></i>
+        </button>
+        {% if users %}
+        <button class="right rounded_button" href="/logout" onclick="location.href='/logout'"
                 style="margin-top: 20px">
-            <i aria-hidden="true" class="fa-solid fa-user-secret rounded"></i>
+            <i class="fa-solid fa-left-from-line" aria-hidden="true"></i>
+            Logout
+        </button>
+        <button class="right" href="/profile" onclick="location.href='/profile'" style="margin-right: 50px">
+            <i aria-hidden="true" class="fa-solid fa-user"></i>
             Profile
         </button>
-        <button class="right rounded_button" href="/source" onclick="location.href='/source'" style="margin-top: 20px">
-            <i aria-hidden="true" class="fa-brands fa-github-alt rounded"></i>
-            Source Code
+        {% else %}
+        <button class="right rounded_button" href="/login" onclick="location.href='/login'">
+            <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+            Login
         </button>
-        <button class="right" href="/achievements" onclick="location.href='/achievements'" style="margin-right: 50px">
-            <i aria-hidden="true" class="fa-solid fa-trophy"></i>
-            Achievements
+        <button class="right rounded_button" href="/signup" onclick="location.href='/signup'">
+            <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+            Sign Up
         </button>
-        <button class="right" href="/projects" onclick="location.href= '/projects'">
-            <i aria-hidden="true" class="fa-solid fa-microchip"></i>
-            Projects
+        {% endif %}
+        <button class="right" href="/source" onclick="location.href= '/source'">
+            <i aria-hidden="true" class="fa-brands fa-github-alt"></i>
+            Source
         </button>
-        <button class="right" href="/blog" onclick="location.href= '/blog'">
-            <i aria-hidden="true" class="fa-solid fa-blog"></i>
-            Blog
+        <button class="right" href="/search" onclick="location.href= '/search'">
+            <i aria-hidden="true" class="fa-solid fa-search"></i>
+            Search
         </button>
-        <section id = "switch-mode" class = "col-end-11">
-            <input type="checkbox" id="switch" class="checkbox" />
-            <label for="switch" class="toggle">
-                <i class = "bx bxs-moon"></i>
-                <i class = "bx bxs-sun pl-4"></i>
-            </label>
-        </section>
     </div>
 </nav>
