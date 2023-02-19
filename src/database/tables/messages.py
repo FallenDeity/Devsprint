@@ -27,7 +27,8 @@ class Comments(Table):
 
     async def create_comment(self, comment: Comment) -> None:
         await self.db.execute(
-            "INSERT INTO comments (id, username, avatar, comment, comment_id, created_at) VALUES ($1, $2, $3, $4, $5, $6)",
+            "INSERT INTO comments (id, username, avatar, comment, comment_id, created_at)"
+            " VALUES ($1, $2, $3, $4, $5, $6)",
             comment.id,
             comment.username,
             comment.avatar,
