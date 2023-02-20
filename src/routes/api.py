@@ -7,7 +7,7 @@ from . import Extension, route
 
 
 class Api(Extension):
-    @route("/api/v1/signup", method="POST", response_model=fastapi.responses.JSONResponse)
+    @route("/api/v1/signup", method="POST", response_model=fastapi.responses.Response)
     async def signup(self, data: UserModel) -> fastapi.responses.Response:
         username, password = data.username, data.password
         user = await self.app.db.user.get_user(username)
@@ -33,14 +33,14 @@ class Api(Extension):
         res.set_cookie(key="session", value=request.headers.get("username", ""))
         return res
 
-    @route("/api/v1/comment", method="POST", response_model=fastapi.responses.JSONResponse)
+    @route("/api/v1/comment", method="POST", response_model=fastapi.responses.Response)
     async def comment(self, data: dict[str, str]) -> fastapi.responses.JSONResponse:
         print(data)
         comment = Comment.from_payload(data)
         await self.app.db.comments.create_comment(comment)
         return fastapi.responses.JSONResponse({"message": "Comment created"}, status_code=201)
 
-    @route("/api/v1/bookmark", method="POST", response_model=fastapi.responses.JSONResponse)
+    @route("/api/v1/bookmark", method="POST", response_model=fastapi.responses.Response)
     async def bookmark(self, data: dict[str, str]) -> fastapi.responses.JSONResponse:
         username, post_id = data["username"], int(data["id"])
         bookmarks = (await self.app.db.user.get_bookmarks(username)) or []
@@ -50,7 +50,7 @@ class Api(Extension):
         await self.app.db.user.add_bookmark(username, post_id)
         return fastapi.responses.JSONResponse({"message": "Bookmark added"}, status_code=201)
 
-    @route("/api/v1/avatar", method="POST", response_model=fastapi.responses.JSONResponse)
+    @route("/api/v1/avatar", method="POST", response_model=fastapi.responses.Response)
     async def avatar(self, data: dict[str, str]) -> fastapi.responses.JSONResponse:
         username, avatar = data["username"], data["avatar"]
         await self.app.db.user.update_avatar(username, avatar)
