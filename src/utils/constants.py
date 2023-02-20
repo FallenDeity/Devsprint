@@ -6,7 +6,13 @@ import typing
 
 __all__: tuple[str, ...] = ("PATHS", "BOT_ID", "AVATAR")
 BOT_ID: int = 1005755826994163733
-AVATAR: str = "https://i.imgur.com/bPW3vY5.png"
+AVATAR: list[str] = [
+    "https://www.w3schools.com/howto/img_avatar.png",
+    "https://www.w3schools.com/howto/img_avatar2.png",
+    "https://www.w3schools.com/w3images/avatar2.png",
+    "https://www.w3schools.com/w3images/avatar5.png",
+    "https://www.w3schools.com/w3images/avatar6.png",
+]
 
 
 class BaseEnum(enum.Enum):

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import fastapi
 
-from ..utils.models import User, UserModel
+from ..utils.models import Comment, User, UserModel
 from . import Extension, route
 
 
@@ -32,3 +32,26 @@ class Api(Extension):
         res = fastapi.responses.RedirectResponse(url="/")
         res.set_cookie(key="session", value=request.headers.get("username", ""))
         return res
+
+    @route("/api/v1/comment", method="POST", response_model=fastapi.responses.JSONResponse)
+    async def comment(self, data: dict[str, str]) -> fastapi.responses.JSONResponse:
+        print(data)
+        comment = Comment.from_payload(data)
+        await self.app.db.comments.create_comment(comment)
+        return fastapi.responses.JSONResponse({"message": "Comment created"}, status_code=201)
+
+    @route("/api/v1/bookmark", method="POST", response_model=fastapi.responses.JSONResponse)
+    async def bookmark(self, data: dict[str, str]) -> fastapi.responses.JSONResponse:
+        username, post_id = data["username"], int(data["id"])
+        bookmarks = (await self.app.db.user.get_bookmarks(username)) or []
+        if post_id in bookmarks:
+            await self.app.db.user.remove_bookmark(username, post_id)
+            return fastapi.responses.JSONResponse({"message": "Bookmark removed"}, status_code=200)
+        await self.app.db.user.add_bookmark(username, post_id)
+        return fastapi.responses.JSONResponse({"message": "Bookmark added"}, status_code=201)
+
+    @route("/api/v1/avatar", method="POST", response_model=fastapi.responses.JSONResponse)
+    async def avatar(self, data: dict[str, str]) -> fastapi.responses.JSONResponse:
+        username, avatar = data["username"], data["avatar"]
+        await self.app.db.user.update_avatar(username, avatar)
+        return fastapi.responses.JSONResponse({"message": "Avatar updated"}, status_code=200)

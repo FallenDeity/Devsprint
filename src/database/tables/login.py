@@ -58,6 +58,7 @@ class User(Table):
 
     async def update_avatar(self, username: str, avatar: str) -> None:
         await self.db.execute("UPDATE users SET avatar = $1 WHERE username = $2", avatar, username)
+        await self.db.execute("UPDATE comments SET avatar = $1 WHERE username = $2", avatar, username)
 
     async def get_comments(self, username: str) -> list[Comment] | None:
         data = await self.db.fetch("SELECT * FROM comments WHERE username = $1", username)

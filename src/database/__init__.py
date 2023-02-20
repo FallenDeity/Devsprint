@@ -34,6 +34,9 @@ class Database:
         self._pool = await asyncpg.create_pool(str(self.app.config.PGURL))
 
     async def setup(self) -> None:
+        if self._pool is not None:
+            self.app.logger.warning("Database connection already exists!")
+            return
         self.app.logger.info("Setting up the database...")
         await self._create_pool()
         await self._setup_extensions()

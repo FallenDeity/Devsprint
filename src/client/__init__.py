@@ -4,8 +4,10 @@ import importlib
 import inspect
 import pathlib
 import typing as t
+from io import BytesIO
 
 import _pickle as pickle  # type: ignore
+import aiofiles
 import aiohttp
 import fastapi
 import uvicorn
@@ -97,10 +99,10 @@ class Website(fastapi.FastAPI):
         self.client = aiohttp.ClientSession()
         self._mount_files()
         self._load_files()
+        async with aiofiles.open("data.pickle", "rb") as f:
+            data: list[Anime] = pickle.load(BytesIO(await f.read()))
+        self.animes = {j.mal_id: j for j in data}
         await self.db.setup()
-        with open("data.pickle", "rb") as f:
-            data: list[list[Anime]] = pickle.load(f)
-        self.animes = {j.mal_id: j for i in data for j in i}
         self.logger.flair("Started up successfully.")
 
     async def on_shutdown(self) -> None:

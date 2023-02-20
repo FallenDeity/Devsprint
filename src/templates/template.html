@@ -7,7 +7,7 @@
         <div class="card mb-3 bg-dark text-white border-dark-subtle" style="margin-top: 128px; width: 40%; margin-left: auto; margin-right: auto; display: block; box-shadow: 0 0 40px darkslategray">
             <img class="card-img-top" src="{{ anime.images.webp.large }}" alt="Card image cap">
             <div class="card-body">
-            <h2 class="card-title font-bold text-dark-emphasis" style="font-size: 30px; margin-bottom: 20px">{{ anime.title }}  #{{ anime.mal_id }}</h2>
+            <h2 class="card-title font-bold text-dark-emphasis" style="font-size: 30px; margin-bottom: 20px">{{ anime.title_english }}  #{{ anime.mal_id }}</h2>
             <p class="card-text text-white-50">{{ anime.synopsis }}</p>
             <a class="card-text" href="{{ anime.url }}" style="text-decoration: none"><small class="text-muted">Click here to visit animelist!</small></a>
             </div>
@@ -33,26 +33,55 @@
                     {% endfor %}
                 </li>
             </ul>
+            <div class="card-footer">
+                {% if users %}
+                <div class="card-footer py-3 border-0 text-dark-emphasis" style="background: inherit; margin-bottom: 40px">
+                    <div class="d-flex flex-start w-100">
+                        <div style="margin-right: 20px">
+                            <img src="{{ users.avatar }}" style="vertical-align: middle;" width="80px" alt="" height="80px" class="rounded-circle">
+                            <span style="vertical-align: middle;">{{ users.username }}</span>
+                        </div>
+                        <div class="form-outline w-100">
+                            <textarea class="form-control text-white-50" id="textAreaExample" rows="4" style="background: inherit;"></textarea>
+                            <label class="form-label" for="textAreaExample"></label>
+                        </div>
+                    </div>
+                    <div style="float: right;">
+                                            <a href="javascript:void(0);" class="btn btn-primary" onclick="addComment({{ anime.mal_id }}, '{{ users.username }}', '{{ users.avatar }}')">
+                        <i aria-hidden="true" class="fa-solid fa-comment"></i>
+                        Add comment
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary" style="margin-left: 20px" onclick="addBookmark({{ anime.mal_id }}, '{{ users.username }}')">
+                    <i aria-hidden="true" class="fa-solid fa-bookmark"></i>
+                    Add bookmark
+                    </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Login to bookmark and comment!</h4>
+                    <hr>
+                    <a href="/login" class="btn btn-danger" style="margin-top: 10px">Login</a>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
     <div class="container-fluid mt-100">
-     <div class="row" style="padding-left: 50px; padding-right: 50px">
+     <div class="row justify-content-center align-items-center" style="padding-left: 50px; padding-right: 50px">
          <div class="col-md-12">
              <h1 class="font-bold text-center" style="font-size: 40px; margin-top: 60px; margin-bottom: 60px">Comments</h1>
              {% for comment in comments %}
              <div class="card mb-4 bg-dark text-white-50">
                  <div class="card-header">
                      <div class="media flex-wrap w-100 align-items-center"> <img src="{{ comment.avatar }}" class="d-block ui-w-40 rounded-circle" alt="" style="width: 30px; height: 30px">
-                         <div class="media-body ml-3"> <a href="javascript:void(0)" data-abc="true">{{ comment.username }}</a>
+                         <div class="media-body ml-3 text-decoration-none"> <a href="javascript:void(0)" data-abc="true">{{ comment.username }}</a>
                              <div class="small">{{ comment.created_at.strftime("%m/%d/%Y, %H:%M:%S") }}</div>
                          </div>
                      </div>
                  </div>
                  <div class="card-body">
                      <p>{{ comment.comment }}</p>
-                 </div>
-                 <div class="card-footer d-flex flex-wrap justify-content-between align-items-center px-0 pt-0 pb-3">
-                     <div class="px-4 pt-3"><button type="button" class="btn btn-primary"><i class="ion ion-md-create"></i>Edit</button></div>
                  </div>
              </div>
              {% endfor %}

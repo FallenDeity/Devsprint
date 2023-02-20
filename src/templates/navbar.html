@@ -4,27 +4,40 @@
             <img alt="Home" src="static/assets/home.png" style="width: 64px; height: 64px">
             Home
         </button>
-        <a class="icon" href="javascript:void(0);" id="menu" onclick="topNav()" style="margin-right: 20px">
+        <a class="icon" href="javascript:void(0);" id="menu" onclick="topNav()" style="margin-right: 20px; display: none; margin-top: 8px">
             <i aria-hidden="true" class="fa-solid fa-bars" id="menu-btn"></i>
             <div class="dropdown" id="mobile-menu">
                 <a href="/source"><i aria-hidden="true" class="fa-brands fa-github-alt rounded"></i>Source Code</a>
                 <a href="/search"><i aria-hidden="true" class="fa-solid fa-search"></i>Search</a>
                 {% if users %}
                 <a href="/profile"><i aria-hidden="true" class="fa-solid fa-user rounded"></i>Profile</a>
-                <a href="/logout"><i class="fa-solid fa-left-from-line" aria-hidden="true"></i>Logout</a>
+                <a href="/logout"><i class="fa-solid fa-left-long" aria-hidden="true"></i>Logout</a>
                 {% else %}
                 <a href="/login"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>Login</a>
                 <a href="/signup"><i class="fa-solid fa-user-plus" aria-hidden="true"></i>Sign Up</a>
                 {% endif %}
             </div>
         </a>
-        <button class="right rounded_button" onclick="toggleMode()" style="margin-right: 20px" id="toggler">
-            <i aria-hidden="true" class="fa-solid fa-moon" id="toggler-icon"></i>
-        </button>
+        <script>responsive()</script>
+        <script>
+            function toggleMode() {
+                let element = document.body;
+                element.classList.toggle("day-mode");
+                let icon = document.getElementById("toggle-icon");
+                icon.className = icon.className === "fa-solid fa-moon" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+                icon.style = (icon.className === "fa-solid fa-moon") ? "margin-top: 9px; float: right; margin-right: 3px;" : "margin-top: 9px; float: left; margin-left: 5px";
+            }
+        </script>
+        <label id="toggler" class="theme-slider" for="checkbox" style="position: relative; float: right; margin-top: 25px; margin-right: 20px">
+            <input type="checkbox" id="checkbox" onclick="toggleMode()" value="1"/>
+            <div class="round slider">
+                <i class="fa-solid fa-moon" aria-hidden="true" style="margin-top: 9px; float: right; margin-right: 3px;" id="toggle-icon"></i>
+            </div>
+        </label>
         {% if users %}
         <button class="right rounded_button" href="/logout" onclick="location.href='/logout'"
                 style="margin-top: 20px">
-            <i class="fa-solid fa-left-from-line" aria-hidden="true"></i>
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
             Logout
         </button>
         <button class="right" href="/profile" onclick="location.href='/profile'" style="margin-right: 50px">
