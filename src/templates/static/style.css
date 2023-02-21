@@ -145,7 +145,7 @@ header {
 .dropdown {
     display: none;
     position: absolute;
-    background: radial-gradient(circle, #3b0872, #7c33c9);
+    background: #2f2e31;
     width: 200px;
     flex-flow: column;
     top: 0;
@@ -156,7 +156,6 @@ header {
     padding: 0 0 30px;
     border-radius: 10px;
     z-index: 99;
-    box-shadow: 0 0 20px 0 #7d3ddc;
 }
 
 
