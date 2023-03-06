@@ -25,7 +25,7 @@ multidict==6.0.4
 orjson==3.8.6
 pydantic==1.10.5
 python-dotenv==0.21.1
-python-multipart==0.0.5
+python-multipart==0.0.6
 pyyaml==6.0
 rfc3986[idna2008]==1.5.0
 six==1.16.0
