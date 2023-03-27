@@ -22,7 +22,7 @@ itsdangerous==2.1.2
 jinja2==3.1.2
 markupsafe==2.1.2
 multidict==6.0.4
-orjson==3.8.6
+orjson==3.8.8
 pydantic==1.10.5
 python-dotenv==0.21.1
 python-multipart==0.0.5
